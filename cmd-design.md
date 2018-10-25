@@ -12,8 +12,8 @@ Command cm:
 Flags:
 	-t  	--title 		string	title of meeeting
 	-s 	--starttime		string 	start time of meeting, format required: "2018-10-01 08:00:00"
-	-e 	--endtime   	string  end time of meeting, format required: "2018-10-01 08:00:00"
-	-p		--partipators 	string	a list of partipators (identify each user by his name), use comma to separate
+	-e 	--endtime	   	string  end time of meeting, format required: "2018-10-01 08:00:00"
+	-p	--partipators 		string	a list of partipators (identify each user by his name), use comma to separate
 ```
 ---
 Command mm:
