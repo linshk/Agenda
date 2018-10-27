@@ -1,0 +1,51 @@
+[Cmd]   2018/10/27 20:10:15 deleteuser
+[Error] 2018/10/27 20:10:15 no user has been logined, login and try again
+[Cmd]   2018/10/27 20:11:40 register --username=me --password=p --email=me@qq.com --phone=110
+[OK]    2018/10/27 20:11:40 register successfully
+[Cmd]   2018/10/27 20:11:42 register --username=me --password=p --email=me@qq.com --phone=110
+[Error] 2018/10/27 20:11:42 username already exists
+[Cmd]   2018/10/27 20:11:53 register --username=me --password=p --email=me@qq.com --phone=
+[Error] 2018/10/27 20:11:53 a username, a password, an email and a phone required
+[Cmd]   2018/10/27 20:12:23 register --username=you --password=p --email=you@qq.com --phone=120
+[OK]    2018/10/27 20:12:23 register successfully
+[Cmd]   2018/10/27 20:12:37 register --username=he --password=p --email=he@qq.com --phone=119
+[OK]    2018/10/27 20:12:37 register successfully
+[Cmd]   2018/10/27 20:12:54 login --username=me --password=p
+[OK]    2018/10/27 20:12:54 login successfully
+[Cmd]   2018/10/27 20:12:57 login --username=me --password=p
+[Error] 2018/10/27 20:12:57 a user has been logined, logout and try again
+[Cmd]   2018/10/27 20:13:11 logout
+[OK]    2018/10/27 20:13:11 logout successfully
+[Cmd]   2018/10/27 20:13:13 logout
+[Error] 2018/10/27 20:13:13 no user has been logined, login and try again
+[Cmd]   2018/10/27 20:13:22 login --username=me --password=a
+[Error] 2018/10/27 20:13:22 username or password error
+[Cmd]   2018/10/27 20:13:25 login --username=a --password=a
+[Error] 2018/10/27 20:13:25 username or password error
+[Cmd]   2018/10/27 20:13:31 login --username=me --password=p
+[OK]    2018/10/27 20:13:31 login successfully
+[Cmd]   2018/10/27 20:13:45 queryuser
+[OK]    2018/10/27 20:13:45 
+         username               email          phone
+ 1             me           me@qq.com            110
+ 2            you          you@qq.com            120
+ 3             he           he@qq.com            119
+[Cmd]   2018/10/27 20:13:55 logout
+[OK]    2018/10/27 20:13:55 logout successfully
+[Cmd]   2018/10/27 20:13:57 queryuser
+[Error] 2018/10/27 20:13:57 no user has been logined, login and try again
+[Cmd]   2018/10/27 20:14:04 login --username=me --password=p
+[OK]    2018/10/27 20:14:04 login successfully
+[Cmd]   2018/10/27 20:14:18 deleteuser
+[OK]    2018/10/27 20:14:18 deleteuser successfully
+[Cmd]   2018/10/27 20:14:20 deleteuser
+[Error] 2018/10/27 20:14:20 no user has been logined, login and try again
+[Cmd]   2018/10/27 20:14:28 login --username=me --password=p
+[Error] 2018/10/27 20:14:28 username or password error
+[Cmd]   2018/10/27 20:14:33 login --username=you --password=p
+[OK]    2018/10/27 20:14:33 login successfully
+[Cmd]   2018/10/27 20:14:43 queryuser
+[OK]    2018/10/27 20:14:43 
+         username               email          phone
+ 1            you          you@qq.com            120
+ 2             he           he@qq.com            119

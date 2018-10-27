@@ -16,6 +16,8 @@ package cmd
 
 import (
 	"fmt"
+	"io"
+	"log"
 	"os"
 
 	//homedir "github.com/mitchellh/go-homedir"
@@ -24,6 +26,11 @@ import (
 )
 
 var cfgFile string
+
+const logFileName string = "log.log"
+
+var logFile *os.File
+var Log *log.Logger
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
@@ -38,6 +45,18 @@ to quickly create a Cobra application.`,
 	// Uncomment the following line if your bare application
 	// has an action associated with it:
 	//	Run: func(cmd *cobra.Command, args []string) { },
+	PersistentPreRun: func(cmd *cobra.Command, args []string) {
+		// Initialize log
+		logFile, err := os.OpenFile(logFileName, os.O_RDWR|os.O_CREATE|os.O_APPEND, 0644)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		Log = log.New(io.MultiWriter(logFile, os.Stdout), "", log.Ldate|log.Ltime)
+	},
+	PersistentPostRun: func(cmd *cobra.Command, args []string) {
+		logFile.Close()
+	},
 }
 
 // Execute adds all child commands to the root command and sets flags appropriately.
@@ -60,32 +79,33 @@ func init() {
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+
 }
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
 	/*
-	if cfgFile != "" {
-		// Use config file from the flag.
-		viper.SetConfigFile(cfgFile)
-	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		if err != nil {
-			fmt.Println(err)
-			os.Exit(1)
+		if cfgFile != "" {
+			// Use config file from the flag.
+			viper.SetConfigFile(cfgFile)
+		} else {
+			// Find home directory.
+			home, err := homedir.Dir()
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+
+			// Search config in home directory with name ".Agenda" (without extension).
+			viper.AddConfigPath(home)
+			viper.SetConfigName(".Agenda")
 		}
 
-		// Search config in home directory with name ".Agenda" (without extension).
-		viper.AddConfigPath(home)
-		viper.SetConfigName(".Agenda")
-	}
+		viper.AutomaticEnv() // read in environment variables that match
 
-	viper.AutomaticEnv() // read in environment variables that match
-
-	// If a config file is found, read it in.
-	if err := viper.ReadInConfig(); err == nil {
-		fmt.Println("Using config file:", viper.ConfigFileUsed())
-	}
+		// If a config file is found, read it in.
+		if err := viper.ReadInConfig(); err == nil {
+			fmt.Println("Using config file:", viper.ConfigFileUsed())
+		}
 	*/
 }
