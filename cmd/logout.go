@@ -19,44 +19,36 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// registerCmd represents the register command
-var registerCmd = &cobra.Command{
-	Use:   "register -u [username] -p [password] -e [email] -c [phone]",
-	Short: "register a new user",
-	Long:  "register a new user, a unique username, a password, an email and a phone required",
+// logoutCmd represents the register command
+var logoutCmd = &cobra.Command{
+	Use:   "logout",
+	Short: "logout a user",
+	Long:  "logout a user",
 	Run: func(cmd *cobra.Command, args []string) {
-		username, _ := cmd.Flags().GetString("username")
-		password, _ := cmd.Flags().GetString("password")
-		email, _ := cmd.Flags().GetString("email")
-		contact, _ := cmd.Flags().GetString("contact")
 
 		Log.SetPrefix("[Cmd]   ")
-		Log.Printf("register --username=%s --password=%s --email=%v --phone=%v", username, password, email, contact)
+		Log.Printf("logout")
 
-		if err := entity.RegisterUser(username, password, email, contact); err != nil {
+		if err := entity.LogoutUser(); err != nil {
 			Log.SetPrefix("[Error] ")
 			Log.Println(err)
 		} else {
 			Log.SetPrefix("[OK]    ")
-			Log.Println("register successfully")
+			Log.Println("logout successfully")
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(registerCmd)
+	rootCmd.AddCommand(logoutCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// registerCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// logoutCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// registerCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-	registerCmd.Flags().StringP("username", "u", "", "username")
-	registerCmd.Flags().StringP("password", "p", "", "password")
-	registerCmd.Flags().StringP("email", "e", "", "email")
-	registerCmd.Flags().StringP("contact", "c", "", "phone")
+	// logoutCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
