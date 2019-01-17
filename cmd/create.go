@@ -15,28 +15,32 @@
 package cmd
 
 import (
-	"fmt"
-
+	"github.com/linshk/Agenda/entity"
 	"github.com/spf13/cobra"
 )
 
 // cmCmd represents the cm command
 var cmCmd = &cobra.Command{
-	Use:   "cm",
-	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
-
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
+	Use:   "create -t [title] -p [participators] -s [start time] -e [end time]",
+	Short: "create a meeting",
+	Long: `create a meeting, with a unique title, a list of participators (a list of registered usernames separated by comma), and with start time and end time (format:2006-01-02T15:04:05).
+	Meetings with conflicts are not allowed`,
 	Run: func(cmd *cobra.Command, args []string) {
 		title, _ := cmd.Flags().GetString("title")
-		participators, _ := cmd.Flags().GetString("participator")
+		participators, _ := cmd.Flags().GetString("participators")
 		st, _ := cmd.Flags().GetString("starttime")
 		et, _ := cmd.Flags().GetString("endtime")
-		fmt.Printf("cm called with args: title=%s participators=%s st=%s et=%s\n", title, participators, st, et)
 
+		Log.SetPrefix("[Cmd]   ")
+		Log.Printf("create --title=%s --participators=%s --starttime=%v --endtime=%v", title, participators, st, et)
+	
+		if err := entity.CreateMeeting(title, participators, st, et); err != nil {
+			Log.SetPrefix("[Error] ")
+			Log.Println(err)
+		} else {
+			Log.SetPrefix("[OK]    ")
+			Log.Println("create meeting successfully")
+		}
 	},
 }
 
@@ -55,8 +59,8 @@ func init() {
 	cmCmd.Flags().StringP("title","t","","title of meeting")
 	cmCmd.MarkFlagRequired("title")
 	
-	cmCmd.Flags().StringP("participator","p","","participators of eeting")
-	cmCmd.MarkFlagRequired("participator")
+	cmCmd.Flags().StringP("participators","p","","participators of the meeting")
+	cmCmd.MarkFlagRequired("participators")
 	
 	cmCmd.Flags().StringP("starttime","s","","start time")
 	cmCmd.MarkFlagRequired("starttime")

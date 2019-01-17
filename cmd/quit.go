@@ -1,4 +1,4 @@
-// Copyright © 2018 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,39 +17,41 @@ package cmd
 import (
 	"github.com/linshk/Agenda/entity"
 	"github.com/spf13/cobra"
-	"github.com/modood/table"
 )
 
-// queryuserCmd represents the register command
-var queryuserCmd = &cobra.Command{
-	Use:   "queryuser",
-	Short: "view all registered users",
-	Long:  "view all registered users with username, email and phone",
+// quitCmd represents the quit command
+var quitCmd = &cobra.Command{
+	Use:   "quit -t [title]",
+	Short: "quit a meeting participated by current user",
+	Long: `quit a meeting participated by current user, the meeting will be canceled if there is no participator after quiting`,
 	Run: func(cmd *cobra.Command, args []string) {
+		title, _ := cmd.Flags().GetString("title")
 
 		Log.SetPrefix("[Cmd]   ")
-		Log.Printf("queryuser")
-
-		if userList, err := entity.QueryUser(); err != nil {
+		Log.Printf("quit --title=%s", title)
+	
+		if err := entity.QuitMeeting(title); err != nil {
 			Log.SetPrefix("[Error] ")
 			Log.Println(err)
 		} else {
 			Log.SetPrefix("[OK]    ")
-			Log.Print("\n" + table.Table(userList))
+			Log.Println("quit meeting successfully")
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(queryuserCmd)
+	rootCmd.AddCommand(quitCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// queryuserCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// quitCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// queryuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// quitCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	quitCmd.Flags().StringP("title","t","","title of meeting")
+	quitCmd.MarkFlagRequired("title")
 }

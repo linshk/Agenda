@@ -1,4 +1,4 @@
-// Copyright © 2018 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,39 +17,45 @@ package cmd
 import (
 	"github.com/linshk/Agenda/entity"
 	"github.com/spf13/cobra"
-	"github.com/modood/table"
 )
 
-// queryuserCmd represents the register command
-var queryuserCmd = &cobra.Command{
-	Use:   "queryuser",
-	Short: "view all registered users",
-	Long:  "view all registered users with username, email and phone",
+// addCmd represents the add command
+var addCmd = &cobra.Command{
+	Use:   "add -t [title] -p [participators]",
+	Short: "add participators to the meeting",
+	Long: `add participators to the meeting that you sponsored`,
 	Run: func(cmd *cobra.Command, args []string) {
+		title, _ := cmd.Flags().GetString("title")
+		participators, _ := cmd.Flags().GetString("participators")
 
 		Log.SetPrefix("[Cmd]   ")
-		Log.Printf("queryuser")
+		Log.Printf("add --title=%s --participators=%s", title, participators)
 
-		if userList, err := entity.QueryUser(); err != nil {
+		if err := entity.AddParticipators(title, participators); err != nil {
 			Log.SetPrefix("[Error] ")
 			Log.Println(err)
 		} else {
 			Log.SetPrefix("[OK]    ")
-			Log.Print("\n" + table.Table(userList))
+			Log.Println("add participators successfully")
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(queryuserCmd)
+	rootCmd.AddCommand(addCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// queryuserCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// addCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// queryuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// addCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	addCmd.Flags().StringP("title","t","","title of meeting")
+	addCmd.MarkFlagRequired("title")
+	
+	addCmd.Flags().StringP("participators","p","","participators of the meeting")
+	addCmd.MarkFlagRequired("participators")
 }

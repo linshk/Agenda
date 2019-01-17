@@ -194,9 +194,12 @@ func DeleteUser() error {
 	return nil
 }
 
-// func GetCurUser() User {
-// 	return curUser
-// }
+func GetCurUser() (User, error) {
+  	if err := ReadCurUserFromFile(); err != nil {
+		return User{}, err
+	}
+  	return curUser, nil
+}
 
 // func GetUserList() UserArray {
 // 	return userList

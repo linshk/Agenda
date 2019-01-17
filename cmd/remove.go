@@ -1,4 +1,4 @@
-// Copyright © 2018 NAME HERE <EMAIL ADDRESS>
+// Copyright © 2019 NAME HERE <EMAIL ADDRESS>
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,39 +17,45 @@ package cmd
 import (
 	"github.com/linshk/Agenda/entity"
 	"github.com/spf13/cobra"
-	"github.com/modood/table"
 )
 
-// queryuserCmd represents the register command
-var queryuserCmd = &cobra.Command{
-	Use:   "queryuser",
-	Short: "view all registered users",
-	Long:  "view all registered users with username, email and phone",
+// removeCmd represents the remove command
+var removeCmd = &cobra.Command{
+	Use:   "remove -t [title] -p [participators]",
+	Short: "remove participators from the meeting",
+	Long: `remove participators from the meeting specified by the title, the meeting will be canceled if there is no participator after removing`,
 	Run: func(cmd *cobra.Command, args []string) {
+		title, _ := cmd.Flags().GetString("title")
+		participators, _ := cmd.Flags().GetString("participators")
 
 		Log.SetPrefix("[Cmd]   ")
-		Log.Printf("queryuser")
-
-		if userList, err := entity.QueryUser(); err != nil {
+		Log.Printf("remove --title=%s --participators=%s", title, participators)
+	
+		if err := entity.RemoveParticipators(title, participators); err != nil {
 			Log.SetPrefix("[Error] ")
 			Log.Println(err)
 		} else {
 			Log.SetPrefix("[OK]    ")
-			Log.Print("\n" + table.Table(userList))
+			Log.Println("remove participators successfully")
 		}
 	},
 }
 
 func init() {
-	rootCmd.AddCommand(queryuserCmd)
+	rootCmd.AddCommand(removeCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// queryuserCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// removeCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// queryuserCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// removeCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	removeCmd.Flags().StringP("title","t","","title of meeting")
+	removeCmd.MarkFlagRequired("title")
+	
+	removeCmd.Flags().StringP("participators","p","","participators of the meeting")
+	removeCmd.MarkFlagRequired("participators")
 }
